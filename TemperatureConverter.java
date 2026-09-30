@@ -1,6 +1,5 @@
-package ch03_proj_2.temperatureconverter;
-
 import java.util.Scanner;
+import java.text.NumberFormat;
 
 public class TemperatureConverter {
 
@@ -17,8 +16,11 @@ public class TemperatureConverter {
             double farenheit = Double.parseDouble(input);
 
             double celsius = (farenheit - 32) * (5.0/9.0);
+            NumberFormat number = NumberFormat.getNumberInstance();
+            number.setMaximumFractionDigits(2);
+            String celsiusString = number.format(celsius);
 
-            String msg = "Degrees in Celsius: " + celsius + "\n";       
+            String msg = "Degrees in Celsius: " + celsiusString + "\n";       
             System.out.println(msg);
 
             System.out.print("Continue? (y/n): ");
