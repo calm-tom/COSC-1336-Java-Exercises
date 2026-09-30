@@ -1,63 +1,52 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class DiceRoller {
+
+    private static final Random random = new Random();
 
     public static void main(String[] args) {
         System.out.println("Dice Roller");
         System.out.println();
 
         Scanner sc = new Scanner(System.in);
-        String choice;
 
-        while (true) {
-            try {
-                System.out.print("Roll the dice? (y/n): ");
-                choice = sc.nextLine();
-
-                if (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")) {
-                    throw new IllegalArgumentException();
-                }
-
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Please enter Y or N.");
-            }
-    }
+        String choice = getUserChoice(sc, "Roll the dice? (y/n): ");
 
         while (choice.equalsIgnoreCase("y")) {
-            int[] dice = rollDice();
-            int total = dice[0] + dice[1];
+            int die1 = rollDie();
+            int die2 = rollDie();
 
-            System.out.println("Die 1: " + dice[0]);
-            System.out.println("Die 2: " + dice[1]);
-            System.out.println("Total: " + total);
+            printDice(die1, die2);
+            printSpecialMessage(die1 + die2);
 
-            bonusMessages(total);
-            System.out.println();
-
-            choice = getChoice(sc);
+            choice = getUserChoice(sc, "Roll again? (y/n): ");
         }
 
         System.out.println("Goodbye!");
     }
 
-    public static int[] rollDice() {
-        int die1 = (int) (Math.random() * 6) + 1;
-        int die2 = (int) (Math.random() * 6) + 1;
-        return new int[] { die1, die2 };
+    private static int rollDie() {
+        return random.nextInt(6) + 1;
     }
 
-    public static void bonusMessages(int total) {
-        if (total == 2) {
-            System.out.println("Snake eyes!");
-        } else if (total == 12) {
-            System.out.println("Boxcars!");
+    private static void printDice(int die1, int die2) {
+        System.out.println("Die 1: " + die1);
+        System.out.println("Die 2: " + die2);
+        System.out.println("Total: " + (die1 + die2));
+    }
+
+    private static void printSpecialMessage(int total) {
+        switch (total) {
+            case 2 -> System.out.println("Snake eyes!");
+            case 12 -> System.out.println("Boxcars!");
+            default -> System.out.println();
         }
     }
 
-    public static String getChoice(Scanner sc) {
+    private static String getUserChoice(Scanner sc, String prompt) {
         while (true) {
-            System.out.print("Roll again? (y/n): ");
+            System.out.print(prompt);
             String choice = sc.nextLine();
 
             if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("n")) {
